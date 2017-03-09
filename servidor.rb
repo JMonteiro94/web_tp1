@@ -5,9 +5,9 @@ class Server
 
 	def initialize(port)
 		@server = TCPServer.open(port)
-		@bd = bd.new('localhost','root','root','web_tp1_db')
-		myRange = 0..20
-		log_array = myRange.to_a
+		@bd = Mysql.new('localhost','root','root','web_tp1_db')
+		#myRange = 0..20
+		#log_array = myRange.to_a
 		#myArray[10] = 10
 		t1 = Thread.new{menu}	
 		t2 = Thread.new{run}
@@ -22,7 +22,7 @@ class Server
 			lat = client.gets.chomp
 			long = client.gets.chomp
 			puts "XDK #{username} #{lat} #{long} conetou-se..."
-			bd.logarcliente username
+			#bd.logarcliente username
 			client.puts "Novo XDK conetado"
 			#x = @bd.query("insert into xdk values ( 'ola', '35','2')")
 			flag = true
@@ -30,7 +30,7 @@ class Server
 					leitura = client.gets.chomp
 					puts leitura
 					if leitura == "logout"
-					flag = false
+						flag = false
 						puts "XDK #{username} desconetou-se..."
 					end
 				end
