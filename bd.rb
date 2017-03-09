@@ -8,5 +8,6 @@ class bd
 	def dbclose
 		@db.close
 	end
+	
 end
 	

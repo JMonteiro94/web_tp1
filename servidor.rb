@@ -1,12 +1,11 @@
 require 'socket'      
-require 'thread'
 require 'mysql'
 
 class Server
 
 	def initialize(port)
 		@server = TCPServer.open(port)
-		@bd = Mysql.new('localhost','root','root','web_tp1_db')
+		@bd = bd.new('localhost','root','root','web_tp1_db')
 		myRange = 0..20
 		log_array = myRange.to_a
 		#myArray[10] = 10
@@ -23,6 +22,7 @@ class Server
 			lat = client.gets.chomp
 			long = client.gets.chomp
 			puts "XDK #{username} #{lat} #{long} conetou-se..."
+			bd.logarcliente username
 			client.puts "Novo XDK conetado"
 			#x = @bd.query("insert into xdk values ( 'ola', '35','2')")
 			flag = true
