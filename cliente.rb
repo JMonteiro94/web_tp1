@@ -7,7 +7,6 @@ class Client
 		@server = server
 		@lat = lat
 		@long = long
-		run
 	end
 	
 	def run
@@ -45,10 +44,13 @@ class Client
 	end
 	
 	def offline 
-		@server.puts "Cliente desligado..."
+		@server.puts "logout"
 	end
 	
 end
+
+con = TCPSocket.open('localhost', 2000)
+c1=Client.new(con,69, 25)
 
 Signal.trap("INT") { 
 	puts "Cliente a desligar..."
@@ -56,5 +58,6 @@ Signal.trap("INT") {
     exit
 }
 
-cliente = TCPSocket.open('localhost', 2000)
-c1=Client.new(cliente,69.69, 25.25)
+c1.run
+
+
