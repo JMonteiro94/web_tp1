@@ -1,14 +1,13 @@
 require 'socket'      
 require 'mysql'
+require_relative './bd'
 
 class Server
 
 	def initialize(port)
 		@server = TCPServer.open(port)
-		@bd = Mysql.new('localhost','root','root','web_tp1_db')
-		#myRange = 0..20
-		#log_array = myRange.to_a
-		#myArray[10] = 10
+		@bd = Basedados.new('localhost','root','root','web_tp1_db')
+		@clientes_online = Array.new
 		t1 = Thread.new{menu}	
 		t2 = Thread.new{run}
 		t1.join
@@ -22,16 +21,33 @@ class Server
 			lat = client.gets.chomp
 			long = client.gets.chomp
 			puts "XDK #{username} #{lat} #{long} conetou-se..."
-			#bd.logarcliente username
-			client.puts "Novo XDK conetado"
-			#x = @bd.query("insert into xdk values ( 'ola', '35','2')")
+			@bd.bduser(username,lat,long)
+			#client.puts "Novo XDK conetado"
+			@clientes_online.push(username)
 			flag = true
+			count=-1
 				while flag
 					leitura = client.gets.chomp
-					puts leitura
+					#puts leitura
+					count+=1
+					if leitura=="T"
+						temp = client.gets.chomp
+						#puts temp
+						data = client.gets.chomp
+						#puts data
+						@bd.bd_add_temp(username,temp,data)
+					else
+						if leitura=="R"
+							sound = client.gets.chomp
+							#puts sound
+							data2 = client.gets.chomp
+							#puts data
+							@bd.bd_add_sound(username,sound,data)
+						end
+					end
 					if leitura == "logout"
 						flag = false
-						puts "XDK #{username} desconetou-se..."
+						puts "XDK #{username} desconetou-se com #{count} leituras efetuadas...}" 
 					end
 				end
 			end
@@ -44,9 +60,11 @@ class Server
 		flag = true
 		while flag
 			puts "\n"
+			puts "------- MENU -------"
 			puts "1-Listar clientes logados e a sua posicao"
 			puts "2-Monitorizar um sensor"
 			puts "3-Sair"
+			puts "--------------------"
 			case gets.chomp
 			when '1'
 				puts listar_users
@@ -60,6 +78,17 @@ class Server
 		end
 	end
 	
+	def listar_users
+		system('cls')
+		#puts @clientes_online
+		puts "----- XDK´s online -----"
+		@clientes_online.each do |c|
+			r=@bd.get_localizacao(c)
+			t=r.fetch_row
+			puts c+" Latitude: "+t[0]+" Longitude: "+t[1]
+		end
+		puts "------------------------"
+	end
 end
 
  Signal.trap("INT") { 

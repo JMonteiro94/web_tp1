@@ -1,5 +1,4 @@
 require 'socket'
-require 'thread'
 
 class Client
 	
@@ -23,36 +22,38 @@ class Client
 	
 	def get_temp
 		temp = rand(-40..40)
-		@server.puts("T #{temp} #{Time.now}")
 		while true do
-			sleep 1
 			temp+=rand(-5..5)
-			@server.puts("T #{temp} #{Time.now}")
-			puts("Temperatura: #{temp} C as #{Time.now}")
+			@server.puts("T")
+			@server.puts temp
+			@server.puts Time.now.getutc
+			puts("Temperatura: #{temp} C as #{Time.now.getutc}")
+			sleep 5
 		end
 	end
 	
 	def get_sound
 		sound = rand(700)
-		@server.puts("Ruido: #{sound} db as #{Time.now}")
 		while true do
-			sleep 1
 			sound+=rand(-50..50)
-			@server.puts("R #{sound} #{Time.now}")
-			puts("Ruido: #{sound} db as #{Time.now}")
+			@server.puts("R")
+			@server.puts sound
+			@server.puts Time.now.getutc
+			puts("Ruido: #{sound} db as #{Time.now.getutc}")
+			sleep 2
 		end
 	end
 	
 	def offline 
 		@server.puts "logout"
 	end
-	
+  
 end
 
 con = TCPSocket.open('localhost', 2000)
-c1=Client.new(con,69, 25)
+c1=Client.new(con,9.69,-10.10)
 
-Signal.trap("INT") { 
+Signal.trap("INT") {
 	puts "Cliente a desligar..."
 	c1.offline
     exit
