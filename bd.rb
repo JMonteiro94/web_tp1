@@ -11,9 +11,9 @@ class Basedados
 	end
 	
 	def bduser(username, lat, long)
-		r = @bd.query("SELECT count(*) from xdk where username='"+username+"'")
-		total = r.fetch_row 
-        if(total[0]=='0') 
+		r = @bd.query("SELECT count(username) from xdk where username='"+username+"'")
+		rs = r.fetch_row 
+        if(rs[0]=='0') 
 			x = @bd.query("insert into xdk values ('"+username+"','"+lat+"','"+long+"')")
 		end
 		#x = @bd.query("insert into xdk values ( 'ola', '35','2')")
@@ -29,5 +29,19 @@ class Basedados
 	
 	def get_localizacao(username)
 		x = @bd.query("Select lat,longi from xdk where username='"+username+"'")
+	end
+	
+	def validar_xdk(id)
+		r = @bd.query("SELECT count(username) from xdk where username='"+id+"'")
+		rs = r.fetch_row
+		return rs
+	end
+	
+	def get_xdk_temp(id)
+	
+	end
+	
+	def get_xdk_sound(id)
+	
 	end
 end

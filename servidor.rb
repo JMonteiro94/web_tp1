@@ -62,7 +62,7 @@ class Server
 			puts "\n"
 			puts "------- MENU -------"
 			puts "1-Listar clientes logados e a sua posicao"
-			puts "2-Monitorizar um sensor"
+			puts "2-Historico de um sensor"
 			puts "3-Sair"
 			puts "--------------------"
 			case gets.chomp
@@ -88,6 +88,40 @@ class Server
 			puts c+" Latitude: "+t[0]+" Longitude: "+t[1]
 		end
 		puts "------------------------"
+	end
+	
+	def valores_sensor
+		flag = true
+		system('cls')
+		while flag
+			puts "----- Historico XDK -----"
+			puts "Insira o nome do cliente:"
+			id = gets.chomp
+			rs = @bd.validar_xdk(id)
+			puts rs
+			if(rs[0]=='1')
+				flag1 = true
+				puts "Cliente valido..."
+				puts "-------------------"
+				while flag1
+					puts "------ Selecionar tipo de sensor ------"
+					puts "1-Sensor de Temperatura"
+					puts "2-Sensor de Ruido"
+					puts "3-Sair"
+					case gets.chomp
+					when '1' 
+						puts valores_temp
+					when '2'
+						puts valores_sound
+					when '3'
+						flag1 = false
+						system('cls')
+					end
+				end
+			else
+				puts "Cliente invalido. Tente mais tarde..."
+			end
+		end
 	end
 end
 
