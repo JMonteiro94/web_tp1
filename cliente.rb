@@ -4,15 +4,15 @@ require 'socket'
 
 class Client
 	
-	def initialize(server, lat, long)
-		@server = server
+	def initialize(lat, long)
+		@server = TCPSocket.open('localhost', 2000)
 		@lat = lat
 		@long = long
 	end
 	
 	def run
 		puts "Nome do XDK:"
-		@username= gets.chomp
+		@username= STDIN.gets.chomp
 		@server.puts @username
 		@server.puts @lat
 		@server.puts @long
@@ -21,16 +21,17 @@ class Client
 		t1.join
 		t2.join
 	end
-	
+  
 	def get_temp
 		temp = rand(-40..40)
+		sleep 1
 		while true do
 			temp+=rand(-5..5)
 			@server.puts("T")
 			@server.puts temp
 			@server.puts Time.now.getutc
 			puts("Temperatura: #{temp} C as #{Time.now.getutc}")
-			sleep 5
+			sleep 30
 		end
 	end
 	
@@ -42,7 +43,7 @@ class Client
 			@server.puts sound
 			@server.puts Time.now.getutc
 			puts("Ruido: #{sound} db as #{Time.now.getutc}")
-			sleep 2
+			sleep 1
 		end
 	end
 	
@@ -52,8 +53,7 @@ class Client
   
 end
 
-con = TCPSocket.open('localhost', 2000)
-c1=Client.new(con,9.69,-10.10)
+c1=Client.new(ARGV[0],ARGV[1])
 
 Signal.trap("INT") {
 	puts "Cliente a desligar..."

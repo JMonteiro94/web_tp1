@@ -28,7 +28,7 @@ class Basedados
 	end
 	
 	def get_localizacao(username)
-		x = @bd.query("Select lat,longi from xdk where username='"+username+"'")
+		x = @bd.query("SELECT lat,longi from xdk where username='"+username+"'")
 	end
 	
 	def validar_xdk(id)
@@ -38,10 +38,12 @@ class Basedados
 	end
 	
 	def get_xdk_temp(id)
-	
+		x = @bd.query("SELECT temp,data from valores_sensores where temp IS NOT NULL and xdk_username='"+id+"'")
+		return x
 	end
 	
 	def get_xdk_sound(id)
-	
+		x = @bd.query("SELECT ruido,data from valores_sensores where ruido IS NOT NULL and xdk_username='"+id+"'")
+		return x
 	end
 end

@@ -36,8 +36,6 @@ CREATE TABLE IF NOT EXISTS `web_tp1_db`.`valores_sensores` (
   `temp` INT NULL,
   `ruido` INT NULL,
   `data` VARCHAR(45) NULL,
-  `sensor_lat` DECIMAL(10,8) NULL,
-  `sensor_long` DECIMAL(11,8) NULL,
   `xdk_username` VARCHAR(45) NOT NULL,
   INDEX `fk_valores_sensores_xdk_idx` (`xdk_username` ASC),
   CONSTRAINT `username`
