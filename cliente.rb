@@ -4,15 +4,15 @@ require 'socket'
 
 class Client
 	
-	def initialize(server, lat, long)
-		@server = server
+	def initialize(lat, long)
+		@server = TCPSocket.open('localhost', 2000)
 		@lat = lat
 		@long = long
 	end
 	
 	def run
 		puts "Nome do XDK:"
-		@username= gets.chomp
+		@username= STDIN.gets.chomp
 		@server.puts @username
 		@server.puts @lat
 		@server.puts @long
@@ -53,8 +53,7 @@ class Client
   
 end
 
-con = TCPSocket.open('localhost', 2000)
-c1=Client.new(con,9.69,-10.10)
+c1=Client.new(ARGV[0],ARGV[1])
 
 Signal.trap("INT") {
 	puts "Cliente a desligar..."
