@@ -51,8 +51,6 @@ class Server
 		end              
 	end
 	
-	
-	
 	def menu
 		flag = true
 		while flag

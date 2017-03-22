@@ -16,7 +16,6 @@ class Basedados
         if(rs[0]=='0') 
 			x = @bd.query("insert into xdk values ('"+username+"','"+lat+"','"+long+"')")
 		end
-		#x = @bd.query("insert into xdk values ( 'ola', '35','2')")
 	end
 	
 	def bd_add_temp(username, temp, data)

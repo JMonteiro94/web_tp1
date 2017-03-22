@@ -62,5 +62,3 @@ Signal.trap("INT") {
 }
 
 c1.run
-
-
